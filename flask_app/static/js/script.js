@@ -29,7 +29,7 @@ function login()
         loginForm = document.getElementById('loginForm');
         var formData = new FormData(loginForm);
 
-        fetch("http://localhost:5000/login", { method: 'POST', body: formData })
+        fetch("/login", { method: 'POST', body: formData })
             .then(response => response.json())
             .then(data => {
                 if (data.message == "Error") 
@@ -49,7 +49,7 @@ function registration()
     {
         regForm = document.getElementById('registrationForm');
         var formData = new FormData(regForm);
-        fetch("http://localhost:5000/users/create", { method: 'POST', body: formData })
+        fetch("/users/create", { method: 'POST', body: formData })
         .then(response => response.json())
         .then(data => {
             error = document.getElementById('regErrorMessage');
@@ -102,7 +102,7 @@ function validateBook(){
 
     var formData = new FormData(loginForm);
 
-    fetch("http://localhost:5000//books/create", { method: 'POST', body: formData })
+    fetch("//books/create", { method: 'POST', body: formData })
         .then(response => response.json())
         .then(data => 
             {
@@ -246,7 +246,7 @@ async function getBookInfo(element)
             'categories' : categories,
             'imgSrc' : imgSrc
         }
-    fetch("http://localhost:5000/books/api", {
+    fetch("/books/api", {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -264,7 +264,7 @@ function addComment()
         commentForm = document.getElementById('formComment');
         var formData = new FormData(commentForm);
 
-        fetch("http://localhost:5000/comments/create", { method: 'POST', body: formData })
+        fetch("/comments/create", { method: 'POST', body: formData })
             .then(response => response.json())
             .then(data => {
                 if (data.status == "Fail") 
