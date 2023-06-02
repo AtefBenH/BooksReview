@@ -267,6 +267,53 @@ async function getBookInfo(element)
         });
 }
 
+// async function getAuthorInfo(element)
+//     {
+//         let book_id = element.getAttribute("data-value1");
+//         let book_title = element.getAttribute("data-value2");
+//         let book_author = element.getAttribute("data-value3");
+//         let api_key = "AIzaSyBRG1XH1T46NTFw3FnL9IhrevoXpuTAdhA";
+//         let response = await fetch("https://www.googleapis.com/books/v1/volumes?q=inauthor:"+book_author+"&key="+api_key);
+//         let data = await response.json();
+//         console.log(data);
+//     //     apiData = data.items[0].volumeInfo;
+//     //     first_publish_year=apiData.publishedDate;
+//     //     if (apiData.averageRating)
+//     //         {
+//     //             rating = apiData.averageRating.toPrecision(3);
+//     //         }
+//     //     else 
+//     //         {
+//     //             rating = "N/A";
+//     //         }
+//     //     categories = apiData.categories;
+//     //     try
+//     //         {
+//     //             imgSrc = apiData.imageLinks.thumbnail;
+//     //         }
+//     //     catch 
+//     //         {
+//     //             imgSrc ="/static/img/404-page-not-found.webp"
+//     //         }
+//     //     data = {
+//     //         'first_publish_year' : first_publish_year,
+//     //         'rating' : rating,
+//     //         'categories' : categories,
+//     //         'imgSrc' : imgSrc
+//     //     }
+//     // fetch("/books/api", {
+//     //     method: 'POST',
+//     //     body: JSON.stringify(data),
+//     //     headers: {
+//     //         'Content-Type': 'application/json'
+//     //     }
+//     // }).then(response => response.json())
+//     //     .then(data => {
+//     //         window.location.replace("/books/"+book_id+"/view");
+//     //         // console.log("DATA : ", data);
+//     //     });
+// }
+
 function addComment()
     {
         commentForm = document.getElementById('formComment');
@@ -288,3 +335,4 @@ function addComment()
                     }
             });
     }
+
