@@ -45,16 +45,17 @@ function login()
             });
     }
 
-function registration()
+function register()
     {
         regForm = document.getElementById('registrationForm');
         var formData = new FormData(regForm);
         fetch("/users/create", { method: 'POST', body: formData })
         .then(response => response.json())
-        .then(data => {
+        .then(data => 
+            {
             error = document.getElementById('regErrorMessage');
             error.innerHTML = ""
-            if (data.errors.length !=0){
+            if (data.errors != 'success'){
                 for (key in data.errors) {
                     error.innerHTML += data.errors[key] + '<br>';
                     if (data.errors[key] == "First Name must contain at least 2 characters"){
@@ -94,7 +95,7 @@ function registration()
             else {
                 window.location.replace('/dashboard');
             }
-        })
+        });
     }
 
 function validateBook(){
@@ -102,7 +103,7 @@ function validateBook(){
 
     var formData = new FormData(loginForm);
 
-    fetch("//books/create", { method: 'POST', body: formData })
+    fetch("/books/create", { method: 'POST', body: formData })
         .then(response => response.json())
         .then(data => 
             {
@@ -227,7 +228,7 @@ async function getBookInfo(element)
         let api_key = "AIzaSyBRG1XH1T46NTFw3FnL9IhrevoXpuTAdhA";
         let response = await fetch("https://www.googleapis.com/books/v1/volumes?q=intitle:"+book_title+"+inauthor:"+book_author+"&key="+api_key);
         let data = await response.json();
-        console.log(data)
+        // console.log(data);
         apiData = data.items[0].volumeInfo;
         first_publish_year=apiData.publishedDate;
         if (apiData.averageRating)

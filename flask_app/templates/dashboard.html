@@ -12,12 +12,19 @@
     <script src="{{  url_for('static', filename='js/script.js')}}" async></script>
 </head>
 <body>
-    <div class="container p-2 m-auto" style="background-color: hsl(0, 0%, 96%)">
-        <div class="row col-12 mx-auto my-5 d-flex justify-content-between">
-            <nav class="navbar navbar-expand navbar-dark bg-primary">
+    <div class="container p-2 m-auto">
+        <div class="row col-12 mx-auto my-5">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div class="container-fluid">
-                    <img src="/static/img/book-half.svg" class="navbar-brand img-fluid" alt="Logo">
-                    <span class="navbar-brand fst-italic fw-medium">Books Review</span>
+                    <div>
+                        <img src="/static/img/book-half.svg" class="navbar-brand img-fluid" alt="Logo">
+                        <span class="navbar-brand fst-italic fw-medium">Books Review</span>
+                    </div>
+                    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
@@ -105,39 +112,7 @@
             </div>
             <div class="col-6">
                 <h3>All Books</h3>
-                <!-- <div>
-                    {% for book in all_books %}
-                        <div class="card mb-2">
-                            <div class="card-header bg-secondary-subtle text-light text-center">
-                                {% if book.id in posted_books_id %}
-                                    <a href="/books/{{book.id}}/edit">{{ book.title }}</a>
-                                {% else %}
-                                <button data-value1="{{book.id}}" data-value2="{{book.title}}" data-value3="{{book.author}}" class="btn btn-link" onclick="getBookInfo(this)">{{book.title}}</button>
-                                {% endif %}
-                            </div>
-                            <div class="card-body d-flex justify-content-between">
-                                <p class="card-text">(Posted By <span class="fw-bold">{{ book.creator }}</span>)</p>
-                                {% if book.id in liked_books_id %}
-                                <button type="button" value="{{book.id}}" class="btn btn-sm btn-outline-danger mx-2" onclick="deleteLike(this)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heartbreak-fill"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M8.931.586 7 3l1.5 4-2 3L8 15C22.534 5.396 13.757-2.21 8.931.586ZM7.358.77 5.5 3 7 7l-1.5 3 1.815 4.537C-6.533 4.96 2.685-2.467 7.358.77Z" />
-                                    </svg>
-                                </button>
-                                {% else %}
-                                <button type="button" value="{{book.id}}" class="btn btn-sm btn-outline-danger mx-2" onclick="createLike(this)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill center"
-                                        viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                                    </svg>
-                                </button>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div> -->
-                
+
                 <table class="table table-auto w-100 table-striped table-bordered text-center">
                     <thead class="bg-dark text-light">
                         <tr>
@@ -151,9 +126,9 @@
                     <tr>
                         <th> 
                             {% if book.id in posted_books_id %}
-                                <a href="/books/{{book.id}}/edit" class="btn btn-outline-dark">{{ book.title }}</a>
+                                <a href="/books/{{book.id}}/edit" class="btn btn-sm btn-outline-dark fw-medium mt-2">{{ book.title }}</a>
                             {% else %}
-                                <button data-value1="{{book.id}}" data-value2="{{book.title}}" data-value3="{{book.author}}" class="btn btn-outline-dark" onclick="getBookInfo(this)">{{book.title}}</button>
+                                <button data-value1="{{book.id}}" data-value2="{{book.title}}" data-value3="{{book.author}}" class="btn btn-sm btn-outline-dark fw-medium mt-2" onclick="getBookInfo(this)">{{book.title}}</button>
                             {% endif %}
                         </th>
                         <th> {{ book.author }} </th>

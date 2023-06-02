@@ -26,7 +26,7 @@ def create_user():
                 **request.form, 'password':hashed_password
             }
         session['user_id'] = User.save(data)
-        return jsonify({'errors' : []})
+        return jsonify({'errors' : 'success'})
     return jsonify({'errors' : errors})
 
 @app.route('/login', methods = ['POST'])
