@@ -25,6 +25,21 @@ def api_book():
     session['api_info'] = request.get_json()
     return jsonify({'message' : 'success'})
 
+@app.route('/authors/api', methods=['POST'])
+def api_author():
+    session['author_info'] = request.get_json()
+    return jsonify({'message' : 'success'})
+
+@app.route('/authors/view')
+def view_author():
+    if 'user_id' in session:
+        logged_user = User.get_by_id({'id' : session['user_id']})
+        user_likes = Like.count_for_user({'user_id' : session['user_id']})
+        liked_books = User.get_user_with_fav({'id' : session['user_id']})
+        author_info = session['author_info']
+        return render_template('view_author.html', liked_books=liked_books, api=author_info, user = logged_user, user_likes=user_likes)
+    return redirect('/')
+
 @app.route('/books/<int:book_id>/view')
 def view_book(book_id):
     if 'user_id' in session:

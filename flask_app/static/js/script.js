@@ -267,52 +267,65 @@ async function getBookInfo(element)
         });
 }
 
-// async function getAuthorInfo(element)
-//     {
-//         let book_id = element.getAttribute("data-value1");
-//         let book_title = element.getAttribute("data-value2");
-//         let book_author = element.getAttribute("data-value3");
-//         let api_key = "AIzaSyBRG1XH1T46NTFw3FnL9IhrevoXpuTAdhA";
-//         let response = await fetch("https://www.googleapis.com/books/v1/volumes?q=inauthor:"+book_author+"&key="+api_key);
-//         let data = await response.json();
-//         console.log(data);
-//     //     apiData = data.items[0].volumeInfo;
-//     //     first_publish_year=apiData.publishedDate;
-//     //     if (apiData.averageRating)
-//     //         {
-//     //             rating = apiData.averageRating.toPrecision(3);
-//     //         }
-//     //     else 
-//     //         {
-//     //             rating = "N/A";
-//     //         }
-//     //     categories = apiData.categories;
-//     //     try
-//     //         {
-//     //             imgSrc = apiData.imageLinks.thumbnail;
-//     //         }
-//     //     catch 
-//     //         {
-//     //             imgSrc ="/static/img/404-page-not-found.webp"
-//     //         }
-//     //     data = {
-//     //         'first_publish_year' : first_publish_year,
-//     //         'rating' : rating,
-//     //         'categories' : categories,
-//     //         'imgSrc' : imgSrc
-//     //     }
-//     // fetch("/books/api", {
-//     //     method: 'POST',
-//     //     body: JSON.stringify(data),
-//     //     headers: {
-//     //         'Content-Type': 'application/json'
-//     //     }
-//     // }).then(response => response.json())
-//     //     .then(data => {
-//     //         window.location.replace("/books/"+book_id+"/view");
-//     //         // console.log("DATA : ", data);
-//     //     });
-// }
+async function getAuthorInfo(element) {
+    let book_author = element.getAttribute("data-value3");
+    let response = await fetch("https://openlibrary.org/search.json?author=" + book_author);
+    let data = await response.json();
+    author_key = data.docs[0].author_key[0];
+    fetch(`https://openlibrary.org/authors/${author_key}.json`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            img = data.key.split("/")[2];
+            console.log(img);
+            try{
+                imgSrc = "https://covers.openlibrary.org/a/olid/"+img+"-L.jpg";
+            }
+            catch{
+                imgSrc = "/static/img/404-page-not-found.webp";
+            }
+            try{
+                bio = data.bio.split("([Source")[0];
+            }
+            catch{
+                bio = "Biography not available for "+book_author;
+            }
+            name = data.name;
+            try{
+                link = data.links[0].url;
+            }
+            catch{
+                link = data.wikipedia;
+            }
+            alternate_names = [data.alternate_names[0], data.alternate_names[1]];
+            birth_date = data.birth_date;
+            try {
+                death_date = data.death_date;
+            }
+            catch{
+                death_date = "";
+            }
+            data = {
+                'alternate_names': alternate_names,
+                'link': link,
+                'birth_date': birth_date,
+                'death_date': death_date,
+                'bio': bio,
+                'name': name,
+                'imgSrc': imgSrc
+            }
+            fetch("/authors/api", {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    window.location.replace("/authors/view");
+                });
+        });
+}
 
 function addComment()
     {
