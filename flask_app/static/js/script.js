@@ -240,7 +240,14 @@ async function getBookInfo(element)
                 rating = "N/A";
             }
         categories = apiData.categories;
-        imgSrc = apiData.imageLinks.thumbnail;
+        try
+            {
+                imgSrc = apiData.imageLinks.thumbnail;
+            }
+        catch 
+            {
+                imgSrc ="/static/img/404-page-not-found.webp"
+            }
         data = {
             'first_publish_year' : first_publish_year,
             'rating' : rating,
