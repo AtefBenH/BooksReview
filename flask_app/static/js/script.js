@@ -297,7 +297,12 @@ async function getAuthorInfo(element) {
             catch{
                 link = data.wikipedia;
             }
-            alternate_names = [data.alternate_names[0], data.alternate_names[1]];
+            try{
+                alternate_names = [data.alternate_names[0], data.alternate_names[1]];
+            }
+            catch{
+                alternate_names = []
+            }
             birth_date = data.birth_date;
             try {
                 death_date = data.death_date;
