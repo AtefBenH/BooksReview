@@ -20,11 +20,6 @@ def dashboard():
         return render_template('dashboard.html', user = logged_user, all_books = all_books, liked_books_id = liked_books_id, user_likes=user_likes, posted_books_id=posted_books_id, liked_books=liked_books)
     return redirect('/')
 
-@app.route('/books/api', methods=['POST'])
-def api_book():
-    session['api_info'] = request.get_json()
-    return jsonify({'message' : 'success'})
-
 @app.route('/authors/api', methods=['POST'])
 def api_author():
     session['author_info'] = request.get_json()
@@ -39,6 +34,11 @@ def view_author():
         author_info = session['author_info']
         return render_template('view_author.html', liked_books=liked_books, api=author_info, user = logged_user, user_likes=user_likes)
     return redirect('/')
+
+@app.route('/books/api', methods=['POST'])
+def api_book():
+    session['api_info'] = request.get_json()
+    return jsonify({'message' : 'success'})
 
 @app.route('/books/<int:book_id>/view')
 def view_book(book_id):

@@ -229,25 +229,31 @@ async function getBookInfo(element)
         let response = await fetch("https://www.googleapis.com/books/v1/volumes?q=intitle:"+book_title+"+inauthor:"+book_author+"&key="+api_key);
         let data = await response.json();
         // console.log(data);
-        apiData = data.items[0].volumeInfo;
-        first_publish_year=apiData.publishedDate;
-        if (apiData.averageRating)
-            {
+        try {
+            apiData = data.items[0].volumeInfo;
+            first_publish_year = apiData.publishedDate;
+            if (apiData.averageRating) {
                 rating = apiData.averageRating.toPrecision(3);
             }
-        else 
-            {
+            else {
                 rating = "N/A";
             }
-        categories = apiData.categories;
-        try
-            {
+            categories = apiData.categories;
+            try {
                 imgSrc = apiData.imageLinks.thumbnail;
             }
-        catch 
+            catch
             {
-                imgSrc ="/static/img/404-page-not-found.webp"
+                imgSrc = "/static/img/404-page-not-found.webp"
             }
+        }
+        catch {
+            first_publish_year = "N/A";
+            rating = "N/A";
+            categories = ["N/A"];
+            imgSrc = "/static/img/404-page-not-found.webp";
+        }
+        
         data = {
             'first_publish_year' : first_publish_year,
             'rating' : rating,
