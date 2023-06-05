@@ -44,6 +44,21 @@ def delete_comment(comment_id):
         else :
             return render_template('404.html')
     return redirect('/')
+
+@app.route('/comments/<int:comment_id>/edit/<string:content>')
+def edit_comment(comment_id, content):
+    status = 'Fail'
+    data = {
+        'id' : comment_id,
+        'content' : content
+    }
+    if content:
+        comment = Comment.getById({'id' : comment_id})
+        if Comment.edit(data) == None:
+            status = comment.book_id
+    else:
+        print("No Content", "#"*30)
+    return jsonify({'status' : status})
         
 
 

@@ -45,6 +45,14 @@ class Comment:
     def delete(cls, data):
         query = "DELETE FROM comments WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query, data)
+    
+    @classmethod
+    def edit(cls, data):
+        query = """UPDATE comments 
+            SET content = %(content)s 
+            WHERE id = %(id)s;
+            """
+        return connectToMySQL(DATABASE).query_db(query, data)
 
     #DELETE A LIKE SINCE USER DELETED
     @classmethod

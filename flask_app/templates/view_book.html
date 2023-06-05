@@ -137,7 +137,11 @@
                     <textarea name="content" id="area_comment" class="form-control form-control-sm" 
                         rows="3" placeholder="Enter your comment here..."></textarea>
                     <input type="hidden" name="book_id" value="{{ book.id}}">
-                    <button id="b-comment" class="btn btn-sm btn-outline-primary mt-2" type="button" onclick="addComment()">Comment</button>
+                    <button id="b-comment" class="btn btn-md btn-outline-primary mt-2" type="button" onclick="addComment()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                        </svg>
+                    </button>
                     
                 </form>
                 <div id="all-comments">
@@ -146,10 +150,22 @@
                         <div class="card w-100 mb-2 form-control-sm">
                             <div class="card-body">
                                 <h5 class="card-title"><span class="fst-italic">{{ comment.first_name }} {{ comment.last_name }}</span> said:</h5>
-                                <div class="d-flex justify-content-between">
-                                    <p class="card-text"> {{ comment.content }}</p>
+                                <div id="divComment" class="d-flex justify-content-between">
+                                    <p id = "commentContent" class="card-text"> {{ comment.content }}</p>
                                         {% if comment.id == user.id%}
-                                            <a href="/comments/{{ comment['comments.id']}}/delete" class="btn btn-danger btn-sm">Delete</a>
+                                        <div>
+                                            <button class="btn btn-outline-success btn-md" value="{{ comment['comments.id']}}" onclick="editComment(this)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                                                </svg>
+                                            </button>
+                                            <a href="/comments/{{ comment['comments.id']}}/delete" class="btn btn-outline-danger btn-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
                                         {% endif %}
                                 </div>
                                 

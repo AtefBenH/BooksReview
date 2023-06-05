@@ -360,3 +360,54 @@ function addComment()
             });
     }
 
+function editComment(element)
+    {
+        idComment = element.value;
+        content = element.parentNode.parentNode.innerText;
+        newInput = document.createElement("input");
+        newInput.setAttribute("type", "text");
+        newInput.classList.add("form-control");
+        newInput.classList.add("form-control-sm");
+        newInput.value = content;
+        newButton = document.createElement('button');
+        newButton.setAttribute("value", idComment);
+        newButton.classList.add("btn");
+        newButton.classList.add("btn-outline-success");
+        newButton.setAttribute("onclick", "changeComment(this)");
+        newButton.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check' viewBox='0 0 16 16'><path d='M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z'/></svg>";
+        grandParent = element.parentNode.parentNode;
+        grandParent.replaceWith(newInput);
+        newInput.classList.add('mb-2');
+        newInput.insertAdjacentElement('afterend', newButton);
+    }
+
+function changeComment(element) {
+    idComment = element.value;
+    content = element.previousSibling.value;
+    url = "/comments/" + idComment + "/edit/" + content;
+    fetch(url)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Erreur : ' + response.status);
+            }
+        })
+        .then(data => {
+            console.log(data.status);
+            if (data.status == 'Fail') {
+                element.previousSibling.style.backgroundColor = "lightcoral";
+                element.previousSibling.value = content;
+
+            }
+            else {
+                window.location.replace('/books/' + data.status + '/view')
+            }
+
+        }).catch(error => {
+            element.previousSibling.style.backgroundColor = "lightcoral";
+            element.previousSibling.value = content;
+        });
+}
+
+    
