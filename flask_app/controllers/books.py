@@ -22,8 +22,10 @@ def dashboard():
 
 @app.route('/authors/api', methods=['POST'])
 def api_author():
-    session['author_info'] = request.get_json()
-    return jsonify({'message' : 'success'})
+    if 'user_id' in session:
+        session['author_info'] = request.get_json()
+        return jsonify({'message' : 'success'})
+    return redirect('/')
 
 @app.route('/authors/view')
 def view_author():
@@ -57,12 +59,14 @@ def view_book(book_id):
 
 @app.route('/books/create', methods=['POST'])
 def create_book():
-    errors = Book.validate(request.form)
-    if len(errors)==0:
-        book_id = Book.save({**request.form, 'user_id':session['user_id']})
-        Like.save({'user_id':session['user_id'], 'book_id':book_id})
-        return jsonify({'errors' : []})
-    return jsonify({'errors' : errors})
+    if 'user_id' in session:
+        errors = Book.validate(request.form)
+        if len(errors)==0:
+            book_id = Book.save({**request.form, 'user_id':session['user_id']})
+            Like.save({'user_id':session['user_id'], 'book_id':book_id})
+            return jsonify({'errors' : []})
+        return jsonify({'errors' : errors})
+    return redirect('/')
 
 @app.route('/my_books')
 def show_books():
@@ -107,14 +111,16 @@ def edit_book(book_id):
 
 @app.route('/books/<int:book_id>/update', methods = ['POST'])
 def update_book(book_id):
-    errors = Book.validate(request.form)
-    if len(errors)>0:
-        return jsonify({'errors' : errors})
-    data = {
-        **request.form, 'user_id' : session['user_id'], 'id' : book_id
-            }
-    Book.update(data)
-    return jsonify({'errors' : []})
+    if 'user_id' in session:
+        errors = Book.validate(request.form)
+        if len(errors)>0:
+            return jsonify({'errors' : errors})
+        data = {
+            **request.form, 'user_id' : session['user_id'], 'id' : book_id
+                }
+        Book.update(data)
+        return jsonify({'errors' : []})
+    return redirect('/')
 
 @app.route('/books/<int:book_id>/delete')
 def delete_book(book_id):
@@ -145,18 +151,20 @@ def delete_book(book_id):
 
 @app.route('/search', methods=['POST'])
 def search():
-    logged_user = User.get_by_id({'id':session['user_id']})
-    user_likes = Like.count_for_user({'user_id' : session['user_id']})
-    liked_books = User.get_user_with_fav({'id' : session['user_id']})
-    liked_books_id = Like.get_books_id_for_user({'id' : session['user_id']})
-    search = f"%%{request.form['search']}%%"
-    data = {
-        'filter' : request.form['filter'],
-        'search' : search
-    }
-    if request.form['filter']!="poster":
-        books = Book.search(data)
-    else :
-        books = Book.searchByPoster({'search':search})
-    return render_template('search.html', books = books, user = logged_user, user_likes=user_likes, data = request.form, liked_books_id=liked_books_id, liked_books=liked_books)
+    if 'user_id' in session:
+        logged_user = User.get_by_id({'id':session['user_id']})
+        user_likes = Like.count_for_user({'user_id' : session['user_id']})
+        liked_books = User.get_user_with_fav({'id' : session['user_id']})
+        liked_books_id = Like.get_books_id_for_user({'id' : session['user_id']})
+        search = f"%%{request.form['search']}%%"
+        data = {
+            'filter' : request.form['filter'],
+            'search' : search
+        }
+        if request.form['filter']!="poster":
+            books = Book.search(data)
+        else :
+            books = Book.searchByPoster({'search':search})
+        return render_template('search.html', books = books, user = logged_user, user_likes=user_likes, data = request.form, liked_books_id=liked_books_id, liked_books=liked_books)
+    return redirect('/')
 

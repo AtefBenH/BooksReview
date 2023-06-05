@@ -9,14 +9,16 @@ from flask_app.models.blacklist import Blacklist
 
 @app.route('/comments/create', methods = ['POST'])
 def create_comment():
-    status = 'Fail'
-    if Comment.validate(request.form):
-        data = {
-            **request.form,'user_id' : session['user_id']
-        }
-        Comment.save(data)
-        status = request.form['book_id']
-    return jsonify({'status' : status})
+    if 'user_id' in session:
+        status = 'Fail'
+        if Comment.validate(request.form):
+            data = {
+                **request.form,'user_id' : session['user_id']
+            }
+            Comment.save(data)
+            status = request.form['book_id']
+        return jsonify({'status' : status})
+    return redirect('/')
 
 @app.route('/comments/<int:comment_id>/delete')
 def delete_comment(comment_id):

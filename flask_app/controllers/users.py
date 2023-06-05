@@ -19,24 +19,28 @@ def register():
 
 @app.route('/users/create', methods = ['POST'])
 def create_user():
-    errors = User.validate(request.form)
-    if len(errors)==0:
-        hashed_password = bcrypt.generate_password_hash(request.form['password'])
-        data = {
-                **request.form, 'password':hashed_password
-            }
-        session['user_id'] = User.save(data)
-        return jsonify({'errors' : 'success'})
-    return jsonify({'errors' : errors})
+    if 'user_id' in session:
+        errors = User.validate(request.form)
+        if len(errors)==0:
+            hashed_password = bcrypt.generate_password_hash(request.form['password'])
+            data = {
+                    **request.form, 'password':hashed_password
+                }
+            session['user_id'] = User.save(data)
+            return jsonify({'errors' : 'success'})
+        return jsonify({'errors' : errors})
+    return redirect('/')
 
 @app.route('/login', methods = ['POST'])
 def login():
-    user_from_db = User.get_by_email({'email' : request.form['email']})
-    if user_from_db :
-        if bcrypt.check_password_hash(user_from_db.password, request.form['password']):
-            session['user_id'] = user_from_db.id
-            return jsonify({'message' : "success"})
-    return jsonify({'message' : "Error"})
+    if 'user_id' in session:
+        user_from_db = User.get_by_email({'email' : request.form['email']})
+        if user_from_db :
+            if bcrypt.check_password_hash(user_from_db.password, request.form['password']):
+                session['user_id'] = user_from_db.id
+                return jsonify({'message' : "success"})
+        return jsonify({'message' : "Error"})
+    return redirect('/')
 
 @app.route('/logout')
 def logout():
